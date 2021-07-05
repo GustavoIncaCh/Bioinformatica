@@ -23,7 +23,7 @@ def calculateQ(d):
                 q[i][j] = (r-2) * d[i][j] - r_A - r_B
     return q
 
-def findLowestPair(q):
+def LowPair(q):
     r = q.shape[0]
     minVal = float("inf")
     for i in range(0,r):
@@ -34,7 +34,7 @@ def findLowestPair(q):
     return minIndex
 
 
-def doDistOfPairMembersToNewNode(i,j,d):
+def NewNodePrime(i,j,d):
     r = d.shape[0]
     r_A = 0
     r_B = 0
@@ -54,12 +54,12 @@ def doDistOfPairMembersToNewNode(i,j,d):
     '''
     return(d_AU,d_BU)
 
-def calculateNewDistanceMatrix(f,g,d):
+def DistanceMatrix(f,g,d):
     print (d)
     r = d.shape[0]
     nd = np.zeros((r-1,r-1))
 
-    # Copy over the old data to this matrix
+    # copia de matriz
     ii = jj = 1
     for i in range(0,r):
         if i == f or i == g:
@@ -72,7 +72,7 @@ def calculateNewDistanceMatrix(f,g,d):
         ii += 1
         jj = 1
 
-    # Calculate the first row and column
+    # Calcular la primera fila y columna
     ii = 1
     for i in range (0,r):
         if i == f or i == g:
@@ -83,7 +83,7 @@ def calculateNewDistanceMatrix(f,g,d):
 
     return nd
 
-def doNeighbourJoining(d,s):
+def NeighbourJoining(d,s):
     labels = list(s)
     f = open('arbol_philo.py', 'r+')
     f.truncate(0)
@@ -94,14 +94,14 @@ def doNeighbourJoining(d,s):
     string_tree=""
     while d.shape[0] > 2:
         q = calculateQ(d)
-        lowestPair = findLowestPair(q)
+        lowestPair = LowPair(q)
         pair_A = lowestPair[0]
         pair_B = lowestPair[1]
         #variable para dibujar
         new_parent=labels[pair_A]+labels[pair_B]
 
-        pairDist = doDistOfPairMembersToNewNode(pair_A,pair_B,d)
-        d = calculateNewDistanceMatrix(pair_A,pair_B,d)
+        pairDist = NewNodePrime(pair_A,pair_B,d)
+        d = DistanceMatrix(pair_A,pair_B,d)
 
         draw_dist_A=str(round(pairDist[0],2))
         draw_dist_B=str(round(pairDist[1],2))
@@ -126,14 +126,14 @@ def doNeighbourJoining(d,s):
 
     if d.shape[0] == 2:
         q = calculateQ(d)
-        lowestPair = findLowestPair(q)
+        lowestPair = LowPair(q)
         pair_A = lowestPair[0]
         pair_B = lowestPair[1]
         #variable para dibujar
         new_parent=labels[pair_A]+labels[pair_B]
 
-        pairDist = doDistOfPairMembersToNewNode(pair_A,pair_B,d)
-        d = calculateNewDistanceMatrix(pair_A,pair_B,d)
+        pairDist = NewNodePrime(pair_A,pair_B,d)
+        d = DistanceMatrix(pair_A,pair_B,d)
 
         draw_dist_A=str(round(pairDist[0]*2,2))
         draw_dist_B=str(round(pairDist[1]*2,2))
@@ -168,7 +168,7 @@ def doNeighbourJoining(d,s):
 
 
 def run(distMatrix,s):
-    doNeighbourJoining(distMatrix,s)
+    NeighbourJoining(distMatrix,s)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -189,20 +189,6 @@ if __name__ == "__main__":
             [4, 8, 0, 6],
             [6, 8, 6, 0]]
         )
-    distMatrix = np.array(
-        [
-            [  0,  30,  68,  57, 127,  27,  28,  33],
-            [ 30,   0,  58,  47, 117,  11,  52,  57],
-            [ 68,  58,   0,  35,  69,  55,  87,  92],
-            [ 57,  47,  35,   0,  94,  44,  79,  84],
-            [127, 117,  69,  94,   0, 114, 149, 154],
-            [ 27,  11,  55,  44, 114,   0,  49,  54],
-            [ 28,  52,  87,  79, 149,  49,   0,  13],
-            [ 33,  57,  92,  84, 154,  54,  13,   0],
-         ]
-        )
     '''
     run(distMatrix,s)
     exec(open("arbol_philo.py").read())
-
-    #print(tree.to_newick(include_distance=False))(3,(2,(1,0)),4);
