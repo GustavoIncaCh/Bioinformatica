@@ -55,7 +55,7 @@ def NewNodePrime(i,j,d):
     return(d_AU,d_BU)
 
 def DistanceMatrix(f,g,d):
-    print (d)
+    #print (d)
     r = d.shape[0]
     nd = np.zeros((r-1,r-1))
 
@@ -119,11 +119,6 @@ def NeighbourJoining(d,s):
         labels[pair_A]=new_parent
         last_parent=new_parent
 
-
-        print("pairdis")
-        print (pairDist[0])
-        print (pairDist[1])
-
     if d.shape[0] == 2:
         q = calculateQ(d)
         lowestPair = LowPair(q)
@@ -150,10 +145,6 @@ def NeighbourJoining(d,s):
         labels.pop(pair_B)
         labels[pair_A]=new_parent
         last_parent=new_parent
-
-
-        print("pairdis")
-        print (pairDist[1]*2)
 
 
     print(string_tree)
